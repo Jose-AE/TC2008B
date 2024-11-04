@@ -41,15 +41,70 @@ public class Maze : MonoBehaviour
 
     PathSegment[] path = new PathSegment[]
     {
+
+
         new PathSegment(new Vector3(-2, 0, 0), 90),
         new PathSegment(new Vector3(0, 0, 2), -90),
         new PathSegment(new Vector3(-2, 0, 0), -90),
         new PathSegment(new Vector3(0, 0, -2), 90),
         new PathSegment(new Vector3(-1, 0, 0), 90),
         new PathSegment(new Vector3(0, 0, 2), -90),
+        new PathSegment(new Vector3(-1, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, -2), 90),
+        new PathSegment(new Vector3(-2, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, 3), 90),
+        new PathSegment(new Vector3(2, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, 1), 90),
+        new PathSegment(new Vector3(1, 0, 0), -90),
 
 
+        new PathSegment(new Vector3(0, 0, 1), -90),
+        new PathSegment(new Vector3(-4, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, -1), 90),
+        new PathSegment(new Vector3(-1, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, 2), 90),
+        new PathSegment(new Vector3(1, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, 1), -90),
+        new PathSegment(new Vector3(-1, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, 1), 90),
+        new PathSegment(new Vector3(3, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, 2), 90),
+        new PathSegment(new Vector3(1, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, -3), -90),
+        new PathSegment(new Vector3(2, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, 1), -90),
+        new PathSegment(new Vector3(-1, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, 3), -90),
+        new PathSegment(new Vector3(-1, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, 5), 90),
+        new PathSegment(new Vector3(1, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, 1), -90),
+        new PathSegment(new Vector3(-4, 0, 0), -90),
+        new PathSegment(new Vector3(0, 0, -1), 90),
+        new PathSegment(new Vector3(-1, 0, 0), 90),
+        new PathSegment(new Vector3(0, 0, 2), 90),
 
+
+        new PathSegment(new Vector3(1, 0,0), -90),
+        new PathSegment(new Vector3(0, 0,1), 90),
+        new PathSegment(new Vector3(1, 0,0), 90),
+        new PathSegment(new Vector3(0, 0,-1), -90),
+
+
+        new PathSegment(new Vector3(1, 0,0), -90),
+        new PathSegment(new Vector3(0, 0,1), 90),
+        new PathSegment(new Vector3(1, 0,0), 90),
+        new PathSegment(new Vector3(0, 0,-1), -90),
+
+        new PathSegment(new Vector3(1, 0,0), -90),
+        new PathSegment(new Vector3(0, 0,1), 90),
+        new PathSegment(new Vector3(1, 0,0), 90),
+        new PathSegment(new Vector3(0, 0,-1), -90),
+
+
+        new PathSegment(new Vector3(1, 0,0), -90),
+        new PathSegment(new Vector3(0, 0,1),90),
+        new PathSegment(new Vector3(2, 0,0), -90),
 
 
     };
@@ -230,8 +285,8 @@ public class Maze : MonoBehaviour
             Gizmos.DrawLine(currentPos, nextPos);
 
             // Draw sphere at segment point
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(nextPos, 1f);
+            Gizmos.color = path[i].rotationBeforeNext == 90 ? Color.blue : path[i].rotationBeforeNext == -90 ? Color.magenta : Color.black;
+            Gizmos.DrawSphere(nextPos, 3f);
 
             // Update current position for next segment
             currentPos = nextPos;
