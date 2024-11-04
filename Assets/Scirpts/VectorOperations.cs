@@ -10,10 +10,8 @@ using UnityEngine;
 public class VectorOperations
 {
 
-    private enum VectorOperationTypes
-    {
 
-    }
+
 
     public static float DotProduct(Vector3 a, Vector3 b)
     {
@@ -87,6 +85,14 @@ public class VectorOperations
         return matrix;
     }
 
+
+    public static Vector3 ApplyMatrixToVector(Matrix4x4 matrix, Vector3 vector)
+    {
+        Vector4 homogeneousVector = vector;
+        homogeneousVector.w = 1;
+
+        return matrix * homogeneousVector;
+    }
 
 
     public static Vector3 Scale(Vector3 vector, Vector3 scale)

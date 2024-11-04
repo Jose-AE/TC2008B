@@ -1,4 +1,3 @@
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Cube : MonoBehaviour
@@ -39,16 +38,19 @@ public class Cube : MonoBehaviour
 
     void SetVerticesAndTriangles()
     {
+        float length = 0.5f;
+        Vector3 offset = Vector3.one / 2;
+
         vertices = new Vector3[]
         {
-            new Vector3(1,1,-1),
-            new Vector3(1,-1,-1),
-            new Vector3(1,1,1),
-            new Vector3(1,-1,1),
-            new Vector3(-1,1,-1),
-            new Vector3(-1,-1,-1),
-            new Vector3(-1,1,1),
-            new Vector3(-1,-1,1),
+            new Vector3(length, length, -length) + offset,
+            new Vector3(length, -length, -length) + offset,
+            new Vector3(length, length, length) + offset,
+            new Vector3(length, -length, length) + offset,
+            new Vector3(-length, length, -length) + offset,
+            new Vector3(-length, -length, -length) + offset,
+            new Vector3(-length, length, length) + offset,
+            new Vector3(-length, -length, length) + offset,
         };
 
         triangles = new int[]
@@ -75,7 +77,7 @@ public class Cube : MonoBehaviour
 
     void ApplyTransforms()
     {
-        Matrix4x4 transaltionMatrix = VectorOperations.TranslationMatrix(new Vector3(posX, posY, posZ));
+        Matrix4x4 transaltionMatrix = VectorOperations.GetTranslationMatrix(new Vector3(posX, posY, posZ));
 
 
         for (int i = 0; i < vertices.Length; i++)
