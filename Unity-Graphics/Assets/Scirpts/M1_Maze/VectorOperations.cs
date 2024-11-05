@@ -76,12 +76,26 @@ public class VectorOperations
     }
 
 
-    public static Vector3 ApplyMatrixToVector(Matrix4x4 matrix, Vector3 vector)
+    public static void ApplyTransformMatrixToMesh(Matrix4x4 matrix, Mesh mesh)
     {
-        Vector4 homogeneousVector = vector;
-        homogeneousVector.w = 1;
+        Vector3[] vertices = mesh.vertices;
 
-        return matrix * homogeneousVector;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+
+            Vector4 homogeneousVector = vertices[i];
+            homogeneousVector.w = 1;
+
+            vertices[i] = matrix * homogeneousVector;
+
+        }
+
+
+        mesh.vertices = vertices;
+
+        // Recalculate mesh bounds and normals, if necessary
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
     }
 
 

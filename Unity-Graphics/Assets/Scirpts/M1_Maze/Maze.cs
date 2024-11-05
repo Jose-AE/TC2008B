@@ -17,7 +17,6 @@ public class Maze : MonoBehaviour
     private float currentRotation = 0f;
     private float moveSpeed = 0.1f; // Units per frame
     private float rotateSpeed = 1f; // Degrees per frame
-    private float speedMult = 1f;
 
 
     private struct PathSegment
@@ -89,36 +88,36 @@ public class Maze : MonoBehaviour
         new PathSegment(new Vector3(2, 0,0), -90),
     };
 
-    void InitCube(Vector3 offset, float sideLength = 1)
+    void CreateCubeMesh(Vector3 offset, float sideLength = 1)
     {
         float length = sideLength / 2;
 
         Vector3[] vertices = new Vector3[]
         {
-            new Vector3(length, length, -length) + offset,
-            new Vector3(length, -length, -length) + offset,
-            new Vector3(length, length, length) + offset,
-            new Vector3(length, -length, length) + offset,
-            new Vector3(-length, length, -length) + offset,
-            new Vector3(-length, -length, -length) + offset,
-            new Vector3(-length, length, length) + offset,
             new Vector3(-length, -length, length) + offset,
+            new Vector3(length, -length, length)+ offset,
+            new Vector3(length, length, length)+ offset,
+            new Vector3(-length, length, length)+ offset,
+            new Vector3(length, -length, -length)+ offset,
+            new Vector3(length, length, -length)+ offset,
+            new Vector3(-length, -length, -length)+ offset,
+            new Vector3(-length, length, -length)+ offset
         };
 
         int[] triangles = new int[]
         {
-            5, 3, 1,
-            3, 8, 4,
-            7, 6, 8,
-            2, 8, 6,
-            1, 4, 2,
-            5, 2, 6,
-            5, 7, 3,
-            3, 7, 8,
-            7, 5, 6,
-            2, 4, 8,
+            1, 2, 3,
             1, 3, 4,
-            5, 1, 2,
+            2, 5, 6,
+            2, 6, 3,
+            5, 7, 8,
+            5, 8, 6,
+            7, 1, 4,
+            7, 4, 8,
+            4, 3, 6,
+            4, 6, 8,
+            7, 5, 2,
+            7, 2, 1,
         };
 
         for (int i = 0; i < triangles.Length; i++) triangles[i]--;
@@ -142,15 +141,12 @@ public class Maze : MonoBehaviour
         cubeMesh = new Mesh();
         meshFilter.mesh = cubeMesh;
 
-        InitCube(new Vector3(0.0f, 0.0f, 0.0f));
+        CreateCubeMesh(new Vector3(0.0f, 0.0f, 0.0f));
         isTranslating = true;
         isRotating = false;
         currentTranslation = Vector3.zero;
         currentRotation = 0;
         currentPathSegment = 0;
-
-        rotateSpeed *= speedMult;
-        moveSpeed *= speedMult;
     }
 
     // Update is called once per frame
@@ -159,7 +155,7 @@ public class Maze : MonoBehaviour
         if (currentPathSegment >= path.Length) { meshRenderer.material.color = Color.green; return; };
 
         //set initial pos
-        InitCube(new Vector3(0.0f, 0.0f, 0.0f));
+        CreateCubeMesh(new Vector3(0.0f, 0.0f, 0.0f));
         Matrix4x4 transform = VectorOperations.GetTranslationMatrix(new Vector3(0.5f, 0.5f, 0.5f));
         transform *= VectorOperations.GetTranslationMatrix(new Vector3(0, 0, -10));
 
@@ -209,24 +205,11 @@ public class Maze : MonoBehaviour
 
         }
 
-        ApplyFunctionToMeshVertices(cubeMesh, vertex => VectorOperations.ApplyMatrixToVector(transform, vertex));
+        VectorOperations.ApplyTransformMatrixToMesh(transform, cubeMesh);
 
 
         if (currentPathSegment == path.Length - 1) meshRenderer.material.color = Color.green;
     }
-
-
-    void ApplyFunctionToMeshVertices(Mesh mesh, Func<Vector3, Vector3> function)
-    {
-        Vector3[] vertices = mesh.vertices;
-
-        for (int i = 0; i < vertices.Length; i++)
-            vertices[i] = function(vertices[i]);
-
-
-        mesh.vertices = vertices;
-    }
-
 
 
     private void OnDrawGizmos()
