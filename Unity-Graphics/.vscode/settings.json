@@ -32,7 +32,7 @@
         "**/*.LXO": true,
         "**/*.ma": true,
         "**/*.MA": true,
-        "**/*.obj": false,
+        "**/*.obj": true,
         "**/*.OBJ": true,
         "**/*.asset": true,
         "**/*.cubemap": true,
@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "TC2008B.sln"
+    "dotnet.defaultSolution": "Unity-Graphics.sln"
 }

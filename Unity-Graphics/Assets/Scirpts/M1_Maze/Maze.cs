@@ -6,7 +6,7 @@ using UnityEngine;
 public class Maze : MonoBehaviour
 {
 
-
+    [SerializeField] bool showPath = true;
 
 
     Mesh cubeMesh;
@@ -23,7 +23,7 @@ public class Maze : MonoBehaviour
     private float currentRotation = 0f;
     private float moveSpeed = 0.1f; // Units per frame
     private float rotateSpeed = 1f; // Degrees per frame
-    private float speedMult = 2f;
+    private float speedMult = 1f;
 
 
 
@@ -181,7 +181,7 @@ public class Maze : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (currentPathSegment >= path.Length) { meshRenderer.material.color = Color.green; return; };
 
@@ -263,7 +263,8 @@ public class Maze : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (path == null || path.Length == 0)
+
+        if (path == null || path.Length == 0 || !showPath)
             return;
 
         Vector3 offset = new Vector3(5f, 0, 5f);
