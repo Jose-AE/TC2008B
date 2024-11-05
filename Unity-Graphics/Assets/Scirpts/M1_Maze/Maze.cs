@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Maze : MonoBehaviour
@@ -8,13 +6,9 @@ public class Maze : MonoBehaviour
 
     [SerializeField] bool showPath = true;
 
-
     Mesh cubeMesh;
     MeshFilter meshFilter;
     MeshRenderer meshRenderer;
-
-
-
 
     private int currentPathSegment = 0;
     private bool isRotating = false;
@@ -26,7 +20,6 @@ public class Maze : MonoBehaviour
     private float speedMult = 1f;
 
 
-
     private struct PathSegment
     {
         public Vector3 targetPos;
@@ -34,15 +27,13 @@ public class Maze : MonoBehaviour
 
         public PathSegment(Vector3 target, float rotation)
         {
-            this.targetPos = target;
-            this.rotationBeforeNext = rotation;
+            targetPos = target;
+            rotationBeforeNext = rotation;
         }
     }
 
     PathSegment[] path = new PathSegment[]
     {
-
-
         new PathSegment(new Vector3(-2, 0, 0), 90),
         new PathSegment(new Vector3(0, 0, 2), -90),
         new PathSegment(new Vector3(-2, 0, 0), -90),
@@ -56,8 +47,6 @@ public class Maze : MonoBehaviour
         new PathSegment(new Vector3(2, 0, 0), -90),
         new PathSegment(new Vector3(0, 0, 1), 90),
         new PathSegment(new Vector3(1, 0, 0), -90),
-
-
         new PathSegment(new Vector3(0, 0, 1), -90),
         new PathSegment(new Vector3(-4, 0, 0), -90),
         new PathSegment(new Vector3(0, 0, -1), 90),
@@ -83,36 +72,22 @@ public class Maze : MonoBehaviour
         new PathSegment(new Vector3(0, 0, -1), 90),
         new PathSegment(new Vector3(-1, 0, 0), 90),
         new PathSegment(new Vector3(0, 0, 2), 90),
-
-
         new PathSegment(new Vector3(1, 0,0), -90),
         new PathSegment(new Vector3(0, 0,1), 90),
         new PathSegment(new Vector3(1, 0,0), 90),
         new PathSegment(new Vector3(0, 0,-1), -90),
-
-
         new PathSegment(new Vector3(1, 0,0), -90),
         new PathSegment(new Vector3(0, 0,1), 90),
         new PathSegment(new Vector3(1, 0,0), 90),
         new PathSegment(new Vector3(0, 0,-1), -90),
-
         new PathSegment(new Vector3(1, 0,0), -90),
         new PathSegment(new Vector3(0, 0,1), 90),
         new PathSegment(new Vector3(1, 0,0), 90),
         new PathSegment(new Vector3(0, 0,-1), -90),
-
-
         new PathSegment(new Vector3(1, 0,0), -90),
         new PathSegment(new Vector3(0, 0,1),90),
         new PathSegment(new Vector3(2, 0,0), -90),
-
-
     };
-
-
-
-
-
 
     void InitCube(Vector3 offset, float sideLength = 1)
     {
@@ -167,8 +142,6 @@ public class Maze : MonoBehaviour
         cubeMesh = new Mesh();
         meshFilter.mesh = cubeMesh;
 
-
-
         InitCube(new Vector3(0.0f, 0.0f, 0.0f));
         isTranslating = true;
         isRotating = false;
@@ -184,8 +157,6 @@ public class Maze : MonoBehaviour
     void Update()
     {
         if (currentPathSegment >= path.Length) { meshRenderer.material.color = Color.green; return; };
-
-
 
         //set initial pos
         InitCube(new Vector3(0.0f, 0.0f, 0.0f));
@@ -204,13 +175,12 @@ public class Maze : MonoBehaviour
             meshRenderer.material.color = Color.blue;
 
 
-            // Calculate translation progress
             currentTranslation += path[currentPathSegment].targetPos.normalized * moveSpeed;
 
             transform *= VectorOperations.GetTranslationMatrix(currentTranslation);
 
 
-            if (Vector3.Distance(currentTranslation, path[currentPathSegment].targetPos) < 0.001f)
+            if (currentTranslation == path[currentPathSegment].targetPos)
             {
                 isTranslating = false;
                 isRotating = true;
@@ -222,8 +192,6 @@ public class Maze : MonoBehaviour
         {
             meshRenderer.material.color = Color.magenta;
 
-
-            // Calculate translation progress
             currentRotation += rotateSpeed * (path[currentPathSegment].rotationBeforeNext < 0 ? -1 : 1);
 
             if (currentRotation == path[currentPathSegment].rotationBeforeNext)
@@ -271,29 +239,23 @@ public class Maze : MonoBehaviour
         float cellSize = 10f;
         Vector3 mazeStart = new Vector3(0, 0, -10f) * cellSize + offset;
 
-        // Draw start position
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(mazeStart, 1f);
 
-        // Draw path segments
         Vector3 currentPos = mazeStart;
         for (int i = 0; i < path.Length; i++)
         {
             Vector3 nextPos = currentPos + (path[i].targetPos * cellSize);
 
-            // Draw line for the path segment
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(currentPos, nextPos);
 
-            // Draw sphere at segment point
             Gizmos.color = path[i].rotationBeforeNext == 90 ? Color.blue : path[i].rotationBeforeNext == -90 ? Color.magenta : Color.black;
             Gizmos.DrawSphere(nextPos, 3f);
 
-            // Update current position for next segment
             currentPos = nextPos;
         }
 
-        // Draw reference point at origin
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(Vector3.zero, 2f);
     }
